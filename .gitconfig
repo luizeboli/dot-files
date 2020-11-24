@@ -1,0 +1,9 @@
+[push]
+  default = current
+
+[pull]
+  rebase = true
+
+[alias]
+  amend = commit -a --amend --no-edit
+  unstage = reset --soft HEAD
