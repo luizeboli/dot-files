@@ -2,6 +2,8 @@
 
 # ~/.macos — https://mths.be/macos
 # Modified by Luiz Felicio
+# Run without downloading:
+# curl https://raw.githubusercontent.com/luizeboli/dot-files/master/.macos | bash
 
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
