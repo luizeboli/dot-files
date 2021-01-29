@@ -2,13 +2,13 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Paath to your oh-my-zsh installation.
-export ZSH="/Users/luizfelicio/.oh-my-zsh"
+export ZSH="/home/lfelicio/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="hypa"
+# ZSH_THEME="hypa"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -120,27 +120,7 @@ alias glt="git fetch --all --prune && git describe --tags \$(git rev-list --tags
 alias chromecors="open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir='/tmp/chrome_dev_test' --disable-web-security"
 alias flush-npm="rm -rf ./node_modules && rm package-lock.json && npm i"
 alias ns="npm start"
-alias build='f() { 
-  local repo branch machine
-  branch=$2
-  [[ -n $3 ]] && machine=$3 || machine="."
-  case $1 in
-    static)
-      repo="static_Deploy_RC"
-    ;;
-    tck)
-      repo="static-ticket_Deploy_RC"
-    ;;
-    *) 
-      { echo "Wrong repo..." && return }
-    ;;
-  esac
-  java -jar ~/Jenkins/jenkins-cli.jar -s http://jenkins.qa.directtalk.com.br:8080/jenkins/ -auth luiz.felicio:529074ed2a74c48311f57f365e4b1420 build $repo -p Branch=$branch -p Machine=$machine -v -s
-};f'
 alias c="code ."
-alias tck="~/Projects/static-ticket"
-alias static="~/Projects/static"
-alias helping="~/Projects/Personal/Helping"
 
 # Key binding
 bindkey '^I' autosuggest-accept
@@ -149,22 +129,6 @@ bindkey '[I' expand-or-complete
 
 # Plugin Configuration
 GIT_AUTO_FETCH_INTERVAL=300
-
-# Modify buffer to `git checkout $BRANCH` if command starts with `vs-`
-# Must be in a git repository
-custom-accept-line() {
-  if [[ ${BUFFER[1,3]} == "vs-" ]]; then
-    if [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]; then
-      echo "$(date +%d.%m.%y-%H:%M:%S) Usei a $BUFFER..." >> ~/log-of-fanti.txt
-      BUFFER="git checkout $BUFFER"
-    fi
-  fi  
-  
-  zle accept-line
-}
-
-zle -N custom-accept-line
-bindkey '^M' custom-accept-line
 
 # Kill node process on specified port
 function kill-node () {
@@ -175,5 +139,18 @@ function kill-node () {
   xargs kill;
 }
 
-# Export Path to PostgreSQL
-export PATH=/Library/PostgreSQL/12/bin:$PATH
+# Modify buffer to `git checkout $BRANCH` if command starts with `vs-`
+# Must be in a git repository
+# custom-accept-line() {
+#   if [[ ${BUFFER[1,3]} == "vs-" ]]; then
+#     if [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]; then
+#       echo "$(date +%d.%m.%y-%H:%M:%S) Usei a $BUFFER..." >> ~/log-of-fanti.txt
+#       BUFFER="git checkout $BUFFER"
+#     fi
+#   fi  
+  
+#   zle accept-line
+# }
+
+# zle -N custom-accept-line
+# bindkey '^M' custom-accept-line
