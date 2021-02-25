@@ -138,19 +138,19 @@ function kill-node () {
   cut -d'/' -f1 |
   xargs kill;
 }
+fpath=($fpath "/home/lfelicio/.zfunctions")
 
-# Modify buffer to `git checkout $BRANCH` if command starts with `vs-`
-# Must be in a git repository
-# custom-accept-line() {
-#   if [[ ${BUFFER[1,3]} == "vs-" ]]; then
-#     if [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]; then
-#       echo "$(date +%d.%m.%y-%H:%M:%S) Usei a $BUFFER..." >> ~/log-of-fanti.txt
-#       BUFFER="git checkout $BUFFER"
-#     fi
-#   fi  
-  
-#   zle accept-line
-# }
+# Set Spaceship ZSH as a prompt
+autoload -U promptinit; promptinit
+prompt spaceship
 
-# zle -N custom-accept-line
-# bindkey '^M' custom-accept-line
+# Spaceship Config
+SPACESHIP_PROMPT_ORDER=(
+  dir           # Current directory section
+  git           # Git section (git_branch + git_status)
+  line_sep      # Line break
+  battery       # Battery level and status
+  jobs          # Background jobs indicator
+  exit_code     # Exit code section
+  char          # Prompt character
+)
