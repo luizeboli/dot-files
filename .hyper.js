@@ -12,7 +12,7 @@ module.exports = {
     fontSize: 13,
 
     // font family with optional fallbacks
-    fontFamily: 'Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
+    fontFamily: '"Fira Code"',
 
     // default font weight: 'normal' or 'bold'
     fontWeight: 'normal',
@@ -59,12 +59,12 @@ module.exports = {
 
     // if you're using a Linux setup which show native menus, set to false
     // default: `true` on Linux, `true` on Windows, ignored on macOS
-    showHamburgerMenu: '',
+    showHamburgerMenu: false,
 
     // set to `false` (without backticks and without quotes) if you want to hide the minimize, maximize and close buttons
     // additionally, set to `'left'` if you want them on the left, like in Ubuntu
     // default: `true` (without backticks and without quotes) on Windows and Linux, ignored on macOS
-    showWindowControls: '',
+    showWindowControls: false,
 
     // custom padding (CSS format, i.e.: `top right bottom left`)
     padding: '12px 14px',
@@ -138,6 +138,11 @@ module.exports = {
     webGLRenderer: true,
 
     // for advanced config flags please refer to https://hyper.is/#cfg
+
+    summon: {
+      hideDock: false,	
+      hotkey: "Super+`"	
+    } 
   },
 
   // a list of plugins to fetch and install from npm
@@ -154,7 +159,6 @@ module.exports = {
   localPlugins: [],
 
   keymaps: {
-    // Example
-    // 'window:devtools': 'cmd+alt+o',
+    'window:devtools': 'cmd+alt+j'
   },
 };
