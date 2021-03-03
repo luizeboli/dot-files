@@ -154,3 +154,41 @@ SPACESHIP_PROMPT_ORDER=(
   exit_code     # Exit code section
   char          # Prompt character
 )
+
+# Hi Platform
+alias tck="~/Projects/static-ticket"	
+alias static="~/Projects/static"
+
+# Modify buffer to `git checkout $BRANCH` if command starts with `vs-`	
+# Must be in a git repository	
+custom-accept-line() {	
+  if [[ ${BUFFER[1,3]} == "vs-" ]]; then	
+    if [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]; then	
+      echo "$(date +%d.%m.%y-%H:%M:%S) Usei a $BUFFER..." >> ~/log-of-fanti.txt	
+      BUFFER="git checkout $BUFFER"	
+    fi	
+  fi  	
+
+  zle accept-line	
+}	
+
+zle -N custom-accept-line	
+bindkey '^M' custom-accept-line	
+
+alias build='f() { 	
+  local repo branch machine	
+  branch=$2	
+  [[ -n $3 ]] && machine=$3 || machine="."	
+  case $1 in	
+    static)	
+      repo="static_Deploy_RC"	
+    ;;	
+    tck)	
+      repo="static-ticket_Deploy_RC"	
+    ;;	
+    *) 	
+      { echo "Wrong repo..." && return }	
+    ;;	
+  esac	
+  java -jar ~/Jenkins/jenkins-cli.jar -s http://jenkins.qa.directtalk.com.br:8080/jenkins/ -auth luiz.felicio:529074ed2a74c48311f57f365e4b1420 build $repo -p Branch=$branch -p Machine=$machine -v -s	
+};f'
