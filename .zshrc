@@ -155,26 +155,13 @@ SPACESHIP_PROMPT_ORDER=(
   char          # Prompt character
 )
 
-# Hi Platform
+### Hi Platform
 alias tck="~/Projects/static-ticket"	
 alias static="~/Projects/static"
-
-# Modify buffer to `git checkout $BRANCH` if command starts with `vs-`	
-# Must be in a git repository	
-custom-accept-line() {	
-  if [[ ${BUFFER[1,3]} == "vs-" ]]; then	
-    if [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]; then	
-      echo "$(date +%d.%m.%y-%H:%M:%S) Usei a $BUFFER..." >> ~/log-of-fanti.txt	
-      BUFFER="git checkout $BUFFER"	
-    fi	
-  fi  	
-
-  zle accept-line	
-}	
-
-zle -N custom-accept-line	
-bindkey '^M' custom-accept-line	
-
+alias gfeat='git commit -m "feat($(current_branch)): ${_lc#gfeat }" #'
+alias gfix='git commit -m "feat($(current_branch)): ${_lc#gfix }" #'
+alias grefactor='git commit -m "feat($(current_branch)): ${_lc#grefactor }" #'
+alias gstyle='git commit -m "feat($(current_branch)): ${_lc#grefactor }" #'
 alias build='f() { 	
   local repo branch machine	
   branch=$2	
@@ -192,3 +179,29 @@ alias build='f() {
   esac	
   java -jar ~/Jenkins/jenkins-cli.jar -s http://jenkins.qa.directtalk.com.br:8080/jenkins/ -auth luiz.felicio:529074ed2a74c48311f57f365e4b1420 build $repo -p Branch=$branch -p Machine=$machine -v -s	
 };f'
+
+### This is used in g** alias so we can commit without quotes
+setopt interactive_comments
+preExecAlias() {
+  _lc=$1;
+}
+add-zsh-hook preexec preExecAlias
+
+# Modify buffer to `git checkout $BRANCH` if command starts with `vs-`	
+# Must be in a git repository	
+custom-accept-line() {	
+  if [[ ${BUFFER[1,3]} == "vs-" ]]; then	
+    if [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]; then	
+      echo "$(date +%d.%m.%y-%H:%M:%S) Usei a $BUFFER..." >> ~/log-of-fanti.txt	
+      BUFFER="git checkout $BUFFER"	
+    fi	
+  fi  	
+
+  zle accept-line	
+}	
+
+zle -N custom-accept-line	
+bindkey '^M' custom-accept-line	
+
+# GPG Commit Signing
+export GPG_TTY=$(tty)
