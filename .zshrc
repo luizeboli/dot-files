@@ -172,9 +172,11 @@ alias gpn='notify() {
   if [[ "$(git push --porcelain)" == *"up to date"* ]]; then
     echo "GIT is up to date"
   elif [[ "$(git push --porcelain)" == *"Done"* ]]; then
-    CURL_OUTPUT=`curl -s -S -X POST -H "Content-Type: application/json" -d "{\"text\": \"Push realizado na branch $branch\"}" "WEBHOOK_URL" 2> /dev/null` || CURL_RETURN_CODE=$?
+    CURL_OUTPUT=`curl -w -X POST -H "Content-Type: application/json" -d "{\"text\": \"Push realizado na branch $branch\"}" "https://chat.googleapis.com/v1/spaces/_uToagAAAAE/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=3KQJoMG1UQ4Ave8yAYzkwUJHTTLNe5NV0l8D9w6hpeQ%3D" 2> /dev/null` || CURL_RETURN_CODE=$?
     if [[ ${CURL_RETURN_CODE} -ne 0 ]]; then  
       echo "Curl returned $CURL_RETURN_CODE"
+    elif [[ ${CURL_OUTPUT} != *"\"code\": 200"* ]]; then
+      echo "Curl returned: $CURL_OUTPUT"
     fi
   else
     echo "Error to push..."
