@@ -121,6 +121,7 @@ alias chromecors="open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Goo
 alias flush-npm="rm -rf ./node_modules && rm package-lock.json && npm i"
 alias ns="npm start"
 alias c="code ."
+alias gaa='git add --all -- :!src/setupProxy.js'
 
 # Key binding
 bindkey '^I' autosuggest-accept
@@ -159,26 +160,26 @@ SPACESHIP_PROMPT_ORDER=(
 alias tck="~/Projects/static-ticket"	
 alias static="~/Projects/static"
 alias gfeat='git commit -m "feat($(current_branch)): ${_lc#gfeat }" #'
-alias gfix='git commit -m "feat($(current_branch)): ${_lc#gfix }" #'
-alias grefactor='git commit -m "feat($(current_branch)): ${_lc#grefactor }" #'
-alias gstyle='git commit -m "feat($(current_branch)): ${_lc#grefactor }" #'
-alias build='f() { 	
-  local repo branch machine	
-  branch=$2	
-  [[ -n $3 ]] && machine=$3 || machine="."	
-  case $1 in	
-    static)	
-      repo="static_Deploy_RC"	
-    ;;	
-    tck)	
-      repo="static-ticket_Deploy_RC"	
-    ;;	
-    *) 	
-      { echo "Wrong repo..." && return }	
-    ;;	
-  esac	
-  java -jar ~/Jenkins/jenkins-cli.jar -s http://jenkins.qa.directtalk.com.br:8080/jenkins/ -auth luiz.felicio:529074ed2a74c48311f57f365e4b1420 build $repo -p Branch=$branch -p Machine=$machine -v -s	
-};f'
+alias gfix='git commit -m "fix($(current_branch)): ${_lc#gfix }" #'
+alias grefactor='git commit -m "refactor($(current_branch)): ${_lc#grefactor }" #'
+alias gstyle='git commit -m "style($(current_branch)): ${_lc#gstyle }" #'
+alias gchore='git commit -m "chore($(current_branch)): ${_lc#gchore }" #'
+alias gtest='git commit -m "test($(current_branch)): ${_lc#gtest }" #"' 
+alias gdocs='git commit -m "docs($(current_branch)): ${_lc#gdocs }" #"'
+alias gpn='notify() {
+  local branch=$(git symbolic-ref --short HEAD)
+
+  if [[ "$(git push --porcelain)" == *"up to date"* ]]; then
+    echo "GIT is up to date"
+  elif [[ "$(git push --porcelain)" == *"Done"* ]]; then
+    CURL_OUTPUT=`curl -s -S -X POST -H "Content-Type: application/json" -d "{\"text\": \"Push realizado na branch $branch\"}" "WEBHOOK_URL" 2> /dev/null` || CURL_RETURN_CODE=$?
+    if [[ ${CURL_RETURN_CODE} -ne 0 ]]; then  
+      echo "Curl returned $CURL_RETURN_CODE"
+    fi
+  else
+    echo "Error to push..."
+  fi
+};notify'
 
 ### This is used in g** alias so we can commit without quotes
 setopt interactive_comments
