@@ -1,9 +1,12 @@
 [push]
-  default = current
+  default=current
 
 [pull]
-  rebase = true
+  rebase=true
+
+[rebase]
+  autostash=true
 
 [alias]
-  amend = commit -a --amend --no-edit
-  unstage = reset --soft HEAD
+  amend=commit --amend --reset-author --no-edit
+  unstage=reset --soft HEAD^1
