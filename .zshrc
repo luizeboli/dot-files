@@ -116,7 +116,7 @@ alias ohmyzsh="nano ~/.oh-my-zsh"
 alias gcam='git commit -n -a -m'
 alias ggsup='git branch --set-upstream-to=origin/$(git_current_branch)'
 alias gcmsg="git commit -n -m"
-alias glt="git fetch --all --prune && git describe --tags \$(git rev-list --tags --max-count=1)"
+alias glt="git fetch --all --prune --quiet && git describe --tags \$(git rev-list --tags --max-count=1)"
 alias chromecors="open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir='/tmp/chrome_dev_test' --disable-web-security"
 alias flush-npm="rm -rf ./node_modules && rm package-lock.json && npm i"
 alias ns="npm start"
@@ -141,10 +141,6 @@ function kill-node () {
 }
 fpath=($fpath "/home/lfelicio/.zfunctions")
 
-# Set Spaceship ZSH as a prompt
-autoload -U promptinit; promptinit
-prompt spaceship
-
 # Spaceship Config
 SPACESHIP_PROMPT_ORDER=(
   dir           # Current directory section
@@ -168,14 +164,18 @@ alias gtest='git commit -m "test($(current_branch)): ${_lc#gtest }" #"'
 alias gdocs='git commit -m "docs($(current_branch)): ${_lc#gdocs }" #"'
 alias gpn='notify() {
   local branch=$(git symbolic-ref --short HEAD)
+  local commit=$(git log -1 --pretty=%B)
+  local pushResult=$(git push --porcelain)
 
-  if [[ "$(git push --porcelain)" == *"up to date"* ]]; then
+  if [[ ${pushResult} == *"up to date"* ]]; then
     echo "GIT is up to date"
-  elif [[ "$(git push --porcelain)" == *"Done"* ]]; then
-    CURL_OUTPUT=`curl -w -X POST -H "Content-Type: application/json" -d "{\"text\": \"Push realizado na branch $branch\"}" "https://chat.googleapis.com/v1/spaces/_uToagAAAAE/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=3KQJoMG1UQ4Ave8yAYzkwUJHTTLNe5NV0l8D9w6hpeQ%3D" 2> /dev/null` || CURL_RETURN_CODE=$?
+  elif [[ ${pushResult} == *"rejected"* ]]; then
+    echo "Failed to push, see git logs..."
+  elif [[ ${pushResult} == *"Done"* ]]; then
+    CURL_OUTPUT=`curl -w -X POST -H "Content-Type: application/json" -d "{\"text\": \"Push realizado na branch $branch\n$commit\"}" "https://chat.googleapis.com/v1/spaces/_uToagAAAAE/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=3KQJoMG1UQ4Ave8yAYzkwUJHTTLNe5NV0l8D9w6hpeQ%3D" 2> /dev/null` || CURL_RETURN_CODE=$?
     if [[ ${CURL_RETURN_CODE} -ne 0 ]]; then  
       echo "Curl returned $CURL_RETURN_CODE"
-    elif [[ ${CURL_OUTPUT} != *"\"code\": 200"* ]]; then
+    elif [[ ${CURL_OUTPUT} != *"\"displayName\": \"Push Notifier\""* ]]; then
       echo "Curl returned: $CURL_OUTPUT"
     fi
   else
@@ -208,3 +208,7 @@ bindkey '^M' custom-accept-line
 
 # GPG Commit Signing
 export GPG_TTY=$(tty)
+
+# Set Spaceship ZSH as a prompt
+autoload -U promptinit; promptinit
+prompt spaceship
