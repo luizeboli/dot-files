@@ -182,6 +182,19 @@ alias gpn='notify() {
     echo "Error to push..."
   fi
 };notify'
+alias gnb='newBranch() {
+  local newBranchName=$1
+  if [[ ${newBranchName[1,3]} != "vs-" ]]; then
+    newBranchName=vs-$newBranchName
+  fi
+
+  echo Retrieving last tag...  
+  local currentTag=$(glt)
+  echo Last tag is $currentTag...
+
+  echo "Creating new $newBranchName branch based on tags/$currentTag..."
+  gco -b $newBranchName tags/$currentTag
+};newBranch'
 
 ### This is used in g** alias so we can commit without quotes
 setopt interactive_comments
@@ -212,3 +225,4 @@ export GPG_TTY=$(tty)
 # Set Spaceship ZSH as a prompt
 autoload -U promptinit; promptinit
 prompt spaceship
+
