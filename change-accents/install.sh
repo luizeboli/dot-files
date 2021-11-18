@@ -10,8 +10,5 @@ touch ~/scripts/change-accents/stdout.log
 echo Copying accent script to scripts folder
 cp ./script.sh ~/scripts/change-accents/script.sh
 
-echo Copying plist to LaunchAgent
-cp ./com.local.accents.plist ~/Library/LaunchAgents/com.local.accents.plist
-
 echo Loading launchd
-launchctl load ~/Library/LaunchAgents/com.local.accents.plist
+launchctl load ./com.local.accents.plist
