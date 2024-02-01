@@ -152,36 +152,65 @@ SPACESHIP_PROMPT_ORDER=(
   char          # Prompt character
 )
 
-### Hi Platform
-alias tck="~/Projects/static-ticket"	
-alias static="~/Projects/static"
-alias gfeat='git commit -m "feat($(current_branch)): ${_lc#gfeat }" #'
-alias gfix='git commit -m "fix($(current_branch)): ${_lc#gfix }" #'
-alias grefactor='git commit -m "refactor($(current_branch)): ${_lc#grefactor }" #'
-alias gstyle='git commit -m "style($(current_branch)): ${_lc#gstyle }" #'
-alias gchore='git commit -m "chore($(current_branch)): ${_lc#gchore }" #'
-alias gtest='git commit -m "test($(current_branch)): ${_lc#gtest }" #"' 
-alias gdocs='git commit -m "docs($(current_branch)): ${_lc#gdocs }" #"'
-alias gpn='notify() {
-  local branch=$(git symbolic-ref --short HEAD)
-  local commit=$(git log -1 --pretty=%B)
-  local pushResult=$(git push --porcelain)
+# Git function to easily write commits from terminal without double quotes
+unalias gc
+gc() {
+  local prefix=""
+  
+  case "$1" in
+    feat) prefix="feat:" ;;
+    fix) prefix="fix:" ;;
+    chore) prefix="chore:" ;;
+    docs) prefix="docs:" ;;
+    style) prefix="style:" ;;
+    refactor) prefix="refactor:" ;;
+    perf) prefix="perf:" ;;
+    test) prefix="test:" ;;
+    *) prefix="" ;;
+  esac
+  
+  shift
+  
+  git commit -v -m "$(git_current_branch) $prefix $*"
+}
 
-  if [[ ${pushResult} == *"up to date"* ]]; then
-    echo "GIT is up to date"
-  elif [[ ${pushResult} == *"rejected"* ]]; then
-    echo "Failed to push, see git logs..."
-  elif [[ ${pushResult} == *"Done"* ]]; then
-    CURL_OUTPUT=`curl -w -X POST -H "Content-Type: application/json" -d "{\"text\": \"Push realizado na branch $branch\n$commit\"}" "https://chat.googleapis.com/v1/spaces/_uToagAAAAE/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=3KQJoMG1UQ4Ave8yAYzkwUJHTTLNe5NV0l8D9w6hpeQ%3D" 2> /dev/null` || CURL_RETURN_CODE=$?
-    if [[ ${CURL_RETURN_CODE} -ne 0 ]]; then  
-      echo "Curl returned $CURL_RETURN_CODE"
-    elif [[ ${CURL_OUTPUT} != *"\"displayName\": \"Push Notifier\""* ]]; then
-      echo "Curl returned: $CURL_OUTPUT"
-    fi
+# Universal function to handle different package managers
+p() {
+  if [[ -f bun.lockb ]]; then
+    command bun "$@"
+  elif [[ -f pnpm-lock.yaml ]]; then
+    command pnpm "$@"
+  elif [[ -f yarn.lock ]]; then
+    command yarn "$@"
+  elif [[ -f package-lock.json ]]; then
+    command npm "$@"
   else
-    echo "Error to push..."
+    command pnpm "$@"
   fi
-};notify'
+}
+
+# Deel
+alias aws='aws-mfa-secure session'
+alias aws_token='export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain npm --domain-owner 974360507615 --profile shared --region eu-west-1 --query authorizationToken --output text`'
+alias aws_giger='aws sso login --profile KubernetesGiger'
+alias docker_ip="docker inspect \
+  --format '{{ .NetworkSettings.IPAddress }}'"
+alias zshcfg="nano ~/.zshrc"
+alias rtzsh="source ~/.zshrc"
+alias gcam='git commit -n -a -m'
+alias ggsup='git branch --set-upstream-to=origin/$(git_current_branch)'
+alias gcmsg="git commit -n -m"
+alias ns="TSC_WATCHFILE=UseFsEventsWithFallbackDynamicPolling npm start"
+alias c="code ."
+alias gpsup='git push --set-upstream origin'
+
+gnb() {
+  gco dev
+  git pull
+  gco -b $1
+}
+
+
 alias gnb='newBranch() {
   local newBranchName=$1
   if [[ ${newBranchName[1,3]} != "vs-" ]]; then
@@ -203,10 +232,10 @@ preExecAlias() {
 }
 add-zsh-hook preexec preExecAlias
 
-# Modify buffer to `git checkout $BRANCH` if command starts with `vs-`	
+# Modify buffer to `git checkout $BRANCH` if command starts with `GP-`	
 # Must be in a git repository	
 custom-accept-line() {	
-  if [[ ${BUFFER[1,3]} == "vs-" ]]; then	
+  if [[ ${BUFFER[1,3]} == "GP-" ]]; then	
     if [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]; then	
       echo "$(date +%d.%m.%y-%H:%M:%S) Usei a $BUFFER..." >> ~/log-of-fanti.txt	
       BUFFER="git checkout $BUFFER"	
@@ -221,3 +250,5 @@ bindkey '^M' custom-accept-line
 
 # GPG Commit Signing
 export GPG_TTY=$(tty)
+export NODE_OPTIONS=--max-old-space-size=8192
+eval "$(starship init zsh)"
