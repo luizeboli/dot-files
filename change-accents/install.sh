@@ -11,6 +11,7 @@ echo Copying accent script to scripts folder
 cp ./script.sh ~/scripts/change-accents/script.sh
 
 echo Copying agent plist to launchd folder
+mkdir -p ~/Library/LaunchAgents
 cp ./com.local.accents.plist ~/Library/LaunchAgents/com.local.accents.plist
 
 echo Loading launchd
