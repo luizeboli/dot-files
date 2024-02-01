@@ -225,7 +225,12 @@ bindkey '^M' custom-accept-line
 # GPG Commit Signing
 export GPG_TTY=$(tty)
 export NODE_OPTIONS=--max-old-space-size=8192
+
+# Issue with warp
 SPACESHIP_PROMPT_ASYNC=FALSE
 # Avoids rendering of the line_sep
 SPACESHIP_PROMPT_SEPARATE_LINE=false
+# Activate spaceship installed through brew
 source $(brew --prefix)/opt/spaceship/spaceship.zsh
+# Activate ruby installed through brew
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
