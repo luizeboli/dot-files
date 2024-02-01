@@ -10,7 +10,6 @@
 [alias]
   amend=commit --amend --reset-author --no-edit
   unstage=reset --soft HEAD^1
-  pudsh=push
 
 [branch]
   autosetupmerge = always
