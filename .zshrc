@@ -8,7 +8,7 @@ export ZSH="${HOME}/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="spaceship"
+# ZSH_THEME="spaceship"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -141,17 +141,6 @@ function kill-node () {
 }
 fpath=($fpath "/home/lfelicio/.zfunctions")
 
-# Spaceship Config
-SPACESHIP_PROMPT_ORDER=(
-  dir           # Current directory section
-  git           # Git section (git_branch + git_status)
-  line_sep      # Line break
-  battery       # Battery level and status
-  jobs          # Background jobs indicator
-  exit_code     # Exit code section
-  char          # Prompt character
-)
-
 # Git function to easily write commits from terminal without double quotes
 unalias gc
 gc() {
@@ -210,21 +199,6 @@ gnb() {
   gco -b $1
 }
 
-
-alias gnb='newBranch() {
-  local newBranchName=$1
-  if [[ ${newBranchName[1,3]} != "vs-" ]]; then
-    newBranchName=vs-$newBranchName
-  fi
-
-  echo Retrieving last tag...  
-  local currentTag=$(glt)
-  echo Last tag is $currentTag...
-
-  echo "Creating new $newBranchName branch based on tags/$currentTag..."
-  gco -b $newBranchName tags/$currentTag
-};newBranch'
-
 ### This is used in g** alias so we can commit without quotes
 setopt interactive_comments
 preExecAlias() {
@@ -251,4 +225,7 @@ bindkey '^M' custom-accept-line
 # GPG Commit Signing
 export GPG_TTY=$(tty)
 export NODE_OPTIONS=--max-old-space-size=8192
-eval "$(starship init zsh)"
+SPACESHIP_PROMPT_ASYNC=FALSE
+# Avoids rendering of the line_sep
+SPACESHIP_PROMPT_SEPARATE_LINE=false
+source $(brew --prefix)/opt/spaceship/spaceship.zsh
