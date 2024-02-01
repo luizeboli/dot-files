@@ -234,4 +234,4 @@ SPACESHIP_PROMPT_SEPARATE_LINE=false
 # Activate spaceship installed through brew
 source $(brew --prefix)/opt/spaceship/spaceship.zsh
 # Activate ruby installed through brew
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PATH="/opt/homebrew/opt/ruby/bin:/Users/luizfelicio/.gem/ruby/3.3.0/bin:$PATH"
