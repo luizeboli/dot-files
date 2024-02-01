@@ -13,19 +13,19 @@
     <integer>3600</integer>
 
     <key>StandardErrorPath</key>
-    <string>/Users/luiz.felicio/scripts/change-accents/stderr.log</string>
+    <string>/Users/luizfelicio/scripts/change-accents/stderr.log</string>
 
     <key>StandardOutPath</key>
-    <string>/Users/luiz.felicio/scripts/change-accents/stdout.log</string>
+    <string>/Users/luizfelicio/scripts/change-accents/stdout.log</string>
 
     <key>EnvironmentVariables</key>
     <dict>
       <key>PATH</key>
-      <string><![CDATA[/Users/luiz.felicio/.nvm/versions/node/v16.13.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin]]></string>
+      <string><![CDATA[/Users/luiz.felicio/.nvm/versions/node/v20.11.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin]]></string>
     </dict>
 
     <key>WorkingDirectory</key>
-    <string>/Users/luiz.felicio/scripts/change-accents</string>
+    <string>/Users/luizfelicio/scripts/change-accents</string>
 
     <key>ProgramArguments</key>
     <array>
