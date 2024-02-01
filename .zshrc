@@ -179,6 +179,7 @@ p() {
 }
 
 # Deel
+alias aws_login='aws sso login --profile shared'
 alias aws='aws-mfa-secure session'
 alias aws_token='export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain npm --domain-owner 974360507615 --profile shared --region eu-west-1 --query authorizationToken --output text`'
 alias aws_giger='aws sso login --profile KubernetesGiger'
