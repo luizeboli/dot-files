@@ -1,0 +1,17 @@
+[line_break]
+disabled = true
+
+add_newline = false
+
+[git_branch]
+format = "on [$symbol$branch]($style) "
+symbol = "🌿 "
+
+[memory_usage]
+format = "$symbol[${ram}( | ${swap})]($style) "
+threshold = 70
+style = "bold dimmed white"
+disabled = false
+
+[nodejs]
+format = ''
