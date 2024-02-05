@@ -13,11 +13,21 @@ alias gcmsg="git commit -n -m"
 alias glt="git fetch --all --prune --quiet && git describe --tags \$(git rev-list --tags --max-count=1)"
 alias chromecors="open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir='/tmp/chrome_dev_test' --disable-web-security"
 alias flush-npm="rm -rf ./node_modules && rm package-lock.json && npm i"
-alias ns="npm start"
 alias c="code ."
 alias gaa='git add --all -- :!src/setupProxy.js'
 alias gp="git push"
 alias gco="git checkout"
+alias gpsup='git push --set-upstream origin'
+
+# Deel
+alias aws='aws-mfa-secure session'
+alias aws_login='aws sso login --profile shared'
+alias aws_token='export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain npm --domain-owner 974360507615 --profile shared --region eu-west-1 --query authorizationToken --output text`'
+alias aws_giger='aws sso login --profile KubernetesGiger'
+alias docker_ip="docker inspect \
+  --format '{{ .NetworkSettings.IPAddress }}'"
+alias ns="TSC_WATCHFILE=UseFsEventsWithFallbackDynamicPolling npm start"
+
 
 # Make tab completion
 bind \t accept-autosuggestion
