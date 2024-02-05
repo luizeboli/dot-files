@@ -17,6 +17,7 @@ alias ns="npm start"
 alias c="code ."
 alias gaa='git add --all -- :!src/setupProxy.js'
 alias gp="git push"
+alias gco="git checkout"
 
 # Make tab completion
 bind \t accept-autosuggestion
@@ -51,3 +52,9 @@ function p
   end
 end
 
+# Create a new branch from dev
+function gnb
+  gco dev
+  git pull
+  gco -b $argv[1]
+end
