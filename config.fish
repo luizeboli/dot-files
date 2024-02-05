@@ -16,6 +16,7 @@ alias flush-npm="rm -rf ./node_modules && rm package-lock.json && npm i"
 alias ns="npm start"
 alias c="code ."
 alias gaa='git add --all -- :!src/setupProxy.js'
+alias gp="git push"
 
 # Make tab completion
 bind \t accept-autosuggestion
